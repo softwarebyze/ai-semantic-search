@@ -13,6 +13,13 @@ import { Restaurant } from "@/src/restaurants";
 
 import { searchRestaurants } from "@/src/semantic-search";
 
+import React from "react";
+import { CircularProgressBar } from "@ui-kitten/components";
+
+export const ScoreCir = ({ score }: { score: number }): React.ReactElement => {
+  return <CircularProgressBar progress={score} />;
+};
+
 export default function HomeScreen() {
   const [search, setSearch] = useState("asian fusion");
   const [results, setResults] = useState<Restaurant[]>([]);
@@ -22,13 +29,15 @@ export default function HomeScreen() {
     })();
   }, [search]);
 
-  const renderItem = ({
-    item,
-  }: {
-    item: Restaurant;
-    index: number;
-  }): React.ReactElement => (
-    <ListItem title={item.name} description={item.description} />
+  const renderItem = React.useMemo(
+    () => ({ item, index }: { item: Restaurant; index: number }): React.ReactElement => (
+      <ListItem
+        title={item.name}
+        description={item.description}
+        accessoryRight={() => <CircularProgressBar progress={item.score} size="tiny" />}
+      />
+    ),
+    []
   );
 
   return (

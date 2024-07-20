@@ -34,10 +34,24 @@
     "plugins": [
       "expo-router",
       "expo-asset",
-      "onnxruntime-react-native"
+      "onnxruntime-react-native",
+      [
+        "expo-dev-launcher",
+        {
+          "launchMode": "most-recent"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "37fd8ae8-7d6d-46c0-b57d-d0cde072d2b3"
+      }
     }
   }
 }

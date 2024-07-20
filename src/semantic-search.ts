@@ -3,7 +3,7 @@ import { HNSW } from "hnsw";
 import { InferenceSession } from "onnxruntime-react-native";
 import { PreTrainedTokenizer } from "@xenova/transformers/src/tokenizers";
 
-import { restaurants } from "@/src/restaurants";
+import { Restaurant, restaurants } from "@/src/restaurants";
 import { globalAverage, zeroTensor } from "./utils";
 
 import tConfig from "./tokenizer.json";
@@ -11,6 +11,8 @@ import tOptions from "./tokenizer_config.json";
 
 // Initialize the tokenizer
 const tokenizer = new PreTrainedTokenizer(tConfig, tOptions);
+
+type RestaurantWithScore = Restaurant & { score: number };
 
 // Create an embedding function and an HNSW index of restaurants
 async function buildIndex() {
@@ -64,6 +66,9 @@ export async function searchRestaurants(q: string, n: number = 5) {
   // Sort the results by score and return the top n
   const sorted = found.sort((a, b) => b.score - a.score).slice(0, n);
 
-  // Return the documents that match the ids
-  return sorted.map((f) => restaurants.find((m) => m.id === f.id));
+  // Return the documents that match the ids with their scores
+  return sorted.map((f) => ({
+    ...restaurants.find((m) => m.id === f.id),
+    score: f.score,
+  })) as RestaurantWithScore[];
 }
