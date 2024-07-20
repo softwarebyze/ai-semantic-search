@@ -29,15 +29,13 @@ export default function HomeScreen() {
     })();
   }, [search]);
 
-  const renderItem = React.useMemo(
-    () => ({ item, index }: { item: Restaurant; index: number }): React.ReactElement => (
-      <ListItem
-        title={item.name}
-        description={item.description}
-        accessoryRight={() => <CircularProgressBar progress={item.score} size="tiny" />}
-      />
-    ),
-    []
+  const renderItem = ({
+    item,
+  }: {
+    item: Restaurant;
+    index: number;
+  }): React.ReactElement => (
+    <ListItem title={item.name} description={item.description} />
   );
 
   return (
